@@ -14,12 +14,14 @@ public class Tecnico {
     private String nombre;
     private String especialidad;
 
+    // Constructor
     public Tecnico(int idTecnico, String nombre, String especialidad) {
         this.idTecnico = idTecnico;
         this.nombre = nombre;
         this.especialidad = especialidad;
     }
 
+    // Getters y Setters de la clase Tecnico
     public int getIdTecnico() {
         return idTecnico;
     }

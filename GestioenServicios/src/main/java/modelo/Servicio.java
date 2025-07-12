@@ -16,7 +16,7 @@ public class Servicio {
     private String estado; // "Pendiente", "En curso", "Finalizado"
     private int idTecnicoAsignado;
 
-    // Constructor: no recibe ID ni estado, los asigna internamente o en el DAO
+    // Constructor: no recibe ID ni estado, los asigna internamente
     public Servicio(String cliente, String tipoProblema) {
         this.cliente = cliente;
         this.tipoProblema = tipoProblema;

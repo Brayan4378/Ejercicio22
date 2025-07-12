@@ -31,16 +31,34 @@ private ServicioControlador controlador;
         
         //Tabla de servicio
         setTitle("Gestion de servicios tecnicos");
-        JTable tablaTecnico = new JTable();
-        DefaultTableModel modeloTecnico = new DefaultTableModel(
-        new String[] { "ID", "Cliente", "Problema", "Estado", "Técnico" }, 0);
-        tablaTecnico.setModel(modeloTecnico);
-        
-        // Tabla de ver todos los servicios
         DefaultTableModel modelo = new DefaultTableModel(
         new String[] { "ID", "Cliente", "Problema", "Estado", "Técnico" }, 0);
+        modeloTecnico.setModel(modelo); 
+        // Tabla de ver todos los servicios
         tablaServicios.setModel(modelo);
     }
+
+    // Metodo que recarga la tabla con todos los servicios actuales
+    private void actualizarTablaServicios() {
+    // Obtener la lista de servicios desde el controlador
+        List<Servicio> lista = controlador.listarTodos();
+        // Obtener el modelo actual de la tabla
+        DefaultTableModel modelo = (DefaultTableModel) tablaServicios.getModel();
+        // Limpiar todas las filas anteriores
+        modelo.setRowCount(0);
+
+        // Recorrer la lista y agregar cada servicio como fila
+        for (Servicio s : lista) {
+            modelo.addRow(new Object[] {
+                s.getId(),                         // ID del servicio
+                s.getCliente(),                    // Nombre del cliente
+                s.getTipoProblema(),               // Tipo de problema
+                s.getEstado(),                     // Estado actual
+                // Mostrar ID del tecnico o "Sin asignar" si no tiene
+                s.getIdTecnicoAsignado() != -1 ? s.getIdTecnicoAsignado() : "Sin asignar"
+        });
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -83,7 +101,6 @@ private ServicioControlador controlador;
         panelVerServicios = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaServicios = new javax.swing.JTable();
-        bttVerTodos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -130,7 +147,7 @@ private ServicioControlador controlador;
                 .addGroup(panelRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(txtProblema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
                 .addComponent(bttRegistrar)
                 .addGap(68, 68, 68))
         );
@@ -179,7 +196,7 @@ private ServicioControlador controlador;
                 .addGroup(panelAsignarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtIdTecnico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 154, Short.MAX_VALUE)
                 .addComponent(bttAsignar)
                 .addGap(70, 70, 70))
         );
@@ -237,7 +254,7 @@ private ServicioControlador controlador;
                 .addGroup(panelCambiarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 161, Short.MAX_VALUE)
                 .addComponent(bttCambiarEstado)
                 .addGap(82, 82, 82))
         );
@@ -278,7 +295,7 @@ private ServicioControlador controlador;
                     .addComponent(txtidEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(85, 85, 85)
                 .addComponent(bttEliminar)
-                .addContainerGap(140, Short.MAX_VALUE))
+                .addContainerGap(159, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Eliminar", panelEliminar);
@@ -333,7 +350,7 @@ private ServicioControlador controlador;
                 .addComponent(bttConsultar)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(88, Short.MAX_VALUE))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Servicio", panelServicio);
@@ -351,31 +368,21 @@ private ServicioControlador controlador;
         ));
         jScrollPane2.setViewportView(tablaServicios);
 
-        bttVerTodos.setText("Ver información de la tabla");
-        bttVerTodos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bttVerTodosActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout panelVerServiciosLayout = new javax.swing.GroupLayout(panelVerServicios);
         panelVerServicios.setLayout(panelVerServiciosLayout);
         panelVerServiciosLayout.setHorizontalGroup(
             panelVerServiciosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)
-            .addGroup(panelVerServiciosLayout.createSequentialGroup()
-                .addGap(188, 188, 188)
-                .addComponent(bttVerTodos)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelVerServiciosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
+                .addContainerGap())
         );
         panelVerServiciosLayout.setVerticalGroup(
             panelVerServiciosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelVerServiciosLayout.createSequentialGroup()
-                .addContainerGap(36, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(bttVerTodos)
-                .addGap(25, 25, 25))
+            .addGroup(panelVerServiciosLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Ver todos los servicios", panelVerServicios);
@@ -399,121 +406,122 @@ private ServicioControlador controlador;
 
     private void bttRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttRegistrarActionPerformed
         // TODO add your handling code here:
-         String cliente = txtCliente.getText();
-         String problema = txtProblema.getText();
-
-         if (cliente.isEmpty() || problema.isEmpty()) {
-              JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
-              return;
+         // Obtener los valores ingresados por el usuario
+        String cliente = txtCliente.getText();
+        String problema = txtProblema.getText();
+        // Verificar que los campos no esten vacios
+        if (cliente.isEmpty() || problema.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
+            return; // Detiene la ejecucion si falta informacion
     }
-            controlador.registrarServicio(cliente, problema);
-            JOptionPane.showMessageDialog(null, "Servicio registrado correctamente.");
-            txtCliente.setText(null);
-            txtProblema.setText(null);
 
+    // Registrar el servicio usando el controlador
+    controlador.registrarServicio(cliente, problema);
+    // Mostrar mensaje de confirmacion
+    JOptionPane.showMessageDialog(null, "Servicio registrado correctamente.");  
+    // Recargar la tabla con los servicios actualizados
+    actualizarTablaServicios();
+    
+    // Limpiar los campos de texto
+    txtCliente.setText(null);
+    txtProblema.setText(null);
     }//GEN-LAST:event_bttRegistrarActionPerformed
 
     private void bttAsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttAsignarActionPerformed
         // TODO add your handling code here:
         try {
+            // Obtener los IDs ingresados por el usuario y convertirlos a enteros
             int idServicio = Integer.parseInt(txtIdServicio.getText());
             int idTecnico = Integer.parseInt(txtIdTecnico.getText());
-
+            // Asignar el tecnico al servicio usando el controlador
             controlador.asignarTecnico(idServicio, idTecnico);
-            JOptionPane.showMessageDialog(null, "Técnico asignado.");
-            txtIdServicio.setText("");
-            txtIdTecnico.setText("");
+            // Mostrar mensaje de confirmacion
+            JOptionPane.showMessageDialog(null, "Tecnico asignado.");
+            // Actualizar la tabla con los cambios
+            actualizarTablaServicios();
+
+    // Limpiar los campos de texto
+    txtIdServicio.setText("");
+    txtIdTecnico.setText("");
+    
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "IDs deben ser numéricos.");
-    }
+            // Mostrar mensaje si los IDs no son numeros validos
+            JOptionPane.showMessageDialog(null, "IDs deben ser numericos.");
+}
     }//GEN-LAST:event_bttAsignarActionPerformed
 
     private void bttCambiarEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttCambiarEstadoActionPerformed
         // TODO add your handling code here:
         try {
-              int idServicio = Integer.parseInt(txtIdServicioEstado.getText());
-              String estado = (String) comboEstado.getSelectedItem();
+            // Obtener el ID del servicio desde el campo de texto
+            int idServicio = Integer.parseInt(txtIdServicioEstado.getText());
+            // Obtener el estado seleccionado del combo
+            String estado = (String) comboEstado.getSelectedItem();
+            // Cambiar el estado del servicio usando el controlador
+            controlador.cambiarEstado(idServicio, estado);
+            // Mostrar mensaje de confirmacion
+            JOptionPane.showMessageDialog(null, "Estado actualizado.");
+            // Actualizar la tabla con los cambios
+            actualizarTablaServicios();
 
-              controlador.cambiarEstado(idServicio, estado);
-              JOptionPane.showMessageDialog(null, "Estado actualizado.");
+        } catch (NumberFormatException ex) {
+            // Mostrar mensaje si el ID no es un numero valido
+            JOptionPane.showMessageDialog(null, "ID invalido.");
+}
 
-        // Recargar la tablaServicios
-        List<Servicio> lista = controlador.listarTodos();
-        DefaultTableModel modelo = (DefaultTableModel) tablaServicios.getModel();
-        modelo.setRowCount(0);
-
-        for (Servicio s : lista) {
-            modelo.addRow(new Object[] {
-                s.getId(),
-                s.getCliente(),
-                s.getTipoProblema(),
-                s.getEstado(),
-                s.getIdTecnicoAsignado() != -1 ? s.getIdTecnicoAsignado() : "Sin asignar"
-            });
-        }
-
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(null, "ID inválido.");
-    }
     }//GEN-LAST:event_bttCambiarEstadoActionPerformed
 
     private void bttEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttEliminarActionPerformed
         // TODO add your handling code here:
          try {
+            // Obtener el ID del servicio a eliminar desde el campo de texto
             int id = Integer.parseInt(txtidEliminar.getText());
+            // Intentar eliminar el servicio si esta finalizado
             controlador.eliminarFinalizado(id);
+            // Mostrar mensaje de confirmacion
             JOptionPane.showMessageDialog(null, "Eliminado si estaba finalizado.");
+            // Actualizar la tabla para reflejar los cambios
+            actualizarTablaServicios();
+            // Limpiar el campo de texto
             txtidEliminar.setText(null);
+
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "ID inválido.");
-    }
+            // Mostrar mensaje si el ID no es un numero valido
+            JOptionPane.showMessageDialog(null, "ID invalido.");
+}
+
     }//GEN-LAST:event_bttEliminarActionPerformed
 
     private void bttConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttConsultarActionPerformed
         // TODO add your handling code here:
           try {
-                int idTecnico = Integer.parseInt(txtIdTecnicoBuscar.getText());
-                List<Servicio> lista = controlador.consultarPorTecnico(idTecnico);
+            // Obtener el ID del tecnico desde el campo de texto
+            int idTecnico = Integer.parseInt(txtIdTecnicoBuscar.getText());
+            // Consultar los servicios asignados a ese tecnico
+            List<Servicio> lista = controlador.consultarPorTecnico(idTecnico);
+            // Obtener el modelo de la tabla que muestra los resultados
+            DefaultTableModel modelo = (DefaultTableModel) modeloTecnico.getModel();
+            // Limpiar las filas anteriores de la tabla
+            modelo.setRowCount(0);
 
-                DefaultTableModel modelo = (DefaultTableModel) modeloTecnico.getModel();
-                modelo.setRowCount(0); // Limpiar tabla
-
-        for (Servicio s : lista) {
-                modelo.addRow(new Object[] {
-                s.getId(),
-                s.getCliente(),
-                s.getTipoProblema(),
-                s.getEstado(),
-                s.getIdTecnicoAsignado()
-            });
-        }
-
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(null, "El ID debe ser numérico.");
-    }
-
-    }//GEN-LAST:event_bttConsultarActionPerformed
-
-    private void bttVerTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttVerTodosActionPerformed
-        // TODO add your handling code here:
-         // Obtener todos los servicios desde el controlador
-    List<Servicio> lista = controlador.listarTodos();
-
-    // Obtener y preparar el modelo de la tabla
-    DefaultTableModel modelo = (DefaultTableModel) tablaServicios.getModel();
-    modelo.setRowCount(0); // Limpia la tabla
-
-    // Rellenar tabla con cada servicio
-    for (Servicio s : lista) {
-        modelo.addRow(new Object[] {
-            s.getId(),
-            s.getCliente(),
-            s.getTipoProblema(),
-            s.getEstado(),
-            s.getIdTecnicoAsignado() != -1 ? s.getIdTecnicoAsignado() : "Sin asignar"
+        // Agregar cada servicio encontrado como una nueva fila en la tabla
+                for (Servicio s : lista) {
+                    modelo.addRow(new Object[] {
+                    s.getId(),               // ID del servicio
+                    s.getCliente(),          // Cliente
+                    s.getTipoProblema(),     // Tipo de problema
+                    s.getEstado(),           // Estado actual
+                    s.getIdTecnicoAsignado() // ID del tecnico asignado
         });
     }
-    }//GEN-LAST:event_bttVerTodosActionPerformed
+
+            } catch (NumberFormatException ex) {
+                 // Mostrar mensaje si el ID ingresado no es numerico
+                JOptionPane.showMessageDialog(null, "El ID debe ser numerico.");
+}
+
+
+    }//GEN-LAST:event_bttConsultarActionPerformed
 
     private void comboEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboEstadoActionPerformed
         // TODO add your handling code here:
@@ -563,7 +571,6 @@ private ServicioControlador controlador;
     private javax.swing.JButton bttConsultar;
     private javax.swing.JButton bttEliminar;
     private javax.swing.JButton bttRegistrar;
-    private javax.swing.JButton bttVerTodos;
     private javax.swing.JComboBox<String> comboEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

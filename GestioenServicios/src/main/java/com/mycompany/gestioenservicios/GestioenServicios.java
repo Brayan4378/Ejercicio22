@@ -15,9 +15,17 @@ public class GestioenServicios {
 
     public static void main(String[] args) {
         
-        ServicioDAO dao = new ServicioDAOImpl();
-        ServicioControlador controlador = new ServicioControlador(dao);
-        VentanaPrincipal ventana = new VentanaPrincipal(controlador); // ✅ así se corrige
-        ventana.setVisible(true);
-    }
+    // Crear instancia del DAO que maneja la lista de servicios
+    ServicioDAO dao = new ServicioDAOImpl();
+    
+    // Crear el controlador y pasarle el DAO
+    ServicioControlador controlador = new ServicioControlador(dao);
+    
+    // Crear la ventana principal y pasarle el controlador
+    VentanaPrincipal ventana = new VentanaPrincipal(controlador);
+    
+    // Mostrar la interfaz grafica
+    ventana.setVisible(true);
+}
+
 }

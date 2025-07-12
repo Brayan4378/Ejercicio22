@@ -12,11 +12,13 @@ import modelo.*;
  */
 public class ServicioControlador {
     
-     private ServicioDAO servicioDAO;
+   // Atributo que permite acceder a los metodos del DAO
+    private ServicioDAO servicioDAO;
 
+// Constructor que recibe el DAO e inicializa el atributo
     public ServicioControlador(ServicioDAO dao) {
-        this.servicioDAO = dao;
-    }
+       this.servicioDAO = dao;
+}
 
     // Registrar un nuevo servicio
     public void registrarServicio(String cliente, String tipoProblema) {

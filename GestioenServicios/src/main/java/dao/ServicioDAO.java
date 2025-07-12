@@ -12,15 +12,22 @@ import modelo.*;
  */
 public abstract class ServicioDAO  {
     
-   public abstract void agregarServicio(Servicio s);
-   
-   public abstract void cambiarEstado(int idServicio, String nuevoEstado);
-   
-   public abstract void eliminarServicioFinalizado(int idServicio);
-   
-   public abstract List<Servicio> obtenerTodos();
-   
-   public abstract void asignarTecnico(int idServicio, int tecnico);
-   
-   public abstract List<Servicio> obtenerServiciosPorTecnico(int idTecnico);
+// Agrega un nuevo servicio a la lista
+public abstract void agregarServicio(Servicio s);
+
+// Cambia el estado de un servicio segun su ID
+public abstract void cambiarEstado(int idServicio, String nuevoEstado);
+
+// Elimina un servicio solo si ya esta finalizado
+public abstract void eliminarServicioFinalizado(int idServicio);
+
+// Devuelve una lista con todos los servicios registrados
+public abstract List<Servicio> obtenerTodos();
+
+// Asigna un tecnico a un servicio segun su ID
+public abstract void asignarTecnico(int idServicio, int tecnico);
+
+// Devuelve todos los servicios que tiene asignado un tecnico
+public abstract List<Servicio> obtenerServiciosPorTecnico(int idTecnico);
+
 }
